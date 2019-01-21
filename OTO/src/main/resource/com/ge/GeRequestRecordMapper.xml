@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ge.dao.GeRequestRecordMapper"> <!-- FIXME 这里重构的时候，要修改这个包 -->
+    <resultMap id="BaseResultMap" type="java.util.HashMap">
+        <id column="id" property="id" jdbcType="VARCHAR"/>
+        <result column="REQUESTURL" property="requesturl" jdbcType="VARCHAR"/>
+        <result column="REMOTEADDR" property="remoteaddr" jdbcType="VARCHAR"/>
+        <result column="REQUEST_USER" property="requestUser" jdbcType="VARCHAR"/>
+        <result column="REQUESTURL_SIMPLE" property="requesturlSimple" jdbcType="VARCHAR"/>
+        <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <resultMap id="BaseResultVo" type="com.ge.po.GeRequestRecord"> <!-- FIXME 这里重构的时候，要修改这个包 -->
+        <id column="id" property="id" jdbcType="VARCHAR" javaType="java.lang.String"/>
+        <result column="REQUESTURL" property="requesturl" jdbcType="VARCHAR" javaType="java.lang.String"/>
+        <result column="REMOTEADDR" property="remoteaddr" jdbcType="VARCHAR" javaType="java.lang.String"/>
+        <result column="REQUEST_USER" property="requestUser" jdbcType="VARCHAR" javaType="java.lang.String"/>
+        <result column="REQUESTURL_SIMPLE" property="requesturlSimple" jdbcType="VARCHAR" javaType="java.lang.String"/>
+        <result column="CREATE_TIME" property="createTime" jdbcType="DATE" javaType="java.util.Date"/>
+
+    </resultMap>
+
+    <!-- 查询数据列Sql不转换成对应的Java命名 -->
+    <sql id="Base_Column_List">
+        ID, REQUESTURL, REMOTEADDR, REQUEST_USER, REQUESTURL_SIMPLE, CREATE_TIME
+    </sql>
+
+    <!-- 查询数据列Sql换成对应的Java命名 -->
+    <sql id="Base_Column_List_JavaName">
+        id as "id",
+        REQUESTURL as "requesturl",
+        REMOTEADDR as "remoteaddr",
+        REQUEST_USER as "requestUser",
+        REQUESTURL_SIMPLE as "requesturlSimple",
+        create_time as "createTime",
+    </sql>
+
+    <!-- 写入操作的SQL -->
+    <sql id="Insert_Base_values">
+       #{id,jdbcType=VARCHAR},
+       #{requesturl,jdbcType=VARCHAR},
+       #{remoteaddr,jdbcType=VARCHAR},
+       #{requestUser,jdbcType=VARCHAR},
+       #{requesturlSimple,jdbcType=VARCHAR},
+       #{createTime,jdbcType=TIMESTAMP}
+    </sql>
+
+    <select id="queryCount" parameterType="map" resultType="int">
+    select count(id) from ge_request_record
+        <where>
+            <if test="requestUser != null">
+                and REQUEST_USER like #{requestUser}
+            </if>
+            <if test="requesturlSimple != null">
+                and REQUESTURL_SIMPLE like #{requesturlSimple}
+            </if>
+        </where>
+    </select>
+    <select id="queryRecord" parameterType="map" resultType="map">
+        select  *
+        from ge_request_record
+        <where>
+            <if test="requesturlSimple != null and requesturlSimple !=''">
+                and REQUESTURL_SIMPLE like #{requesturlSimple}
+            </if>
+            <if test="startDate != null">
+                and CREATE_TIME &gt;= #{startDate}
+            </if>
+            <if test="endDate != null">
+                and CREATE_TIME  &lt;= #{endDate}
+            </if>
+        </where>
+    </select>
+
+
+</mapper>

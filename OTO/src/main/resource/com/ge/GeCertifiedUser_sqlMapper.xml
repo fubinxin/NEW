@@ -1,0 +1,261 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ge.dao.GeCertifiedUserMapper"> <!-- FIXME 这里重构的时候，要修改这个包 -->
+    <resultMap id="BaseResultMap" type="java.util.HashMap">
+        <id column="id" property="id" javaType="java.lang.Integer" jdbcType="NUMERIC"/>
+        <result column="head_url" property="headUrl" jdbcType="VARCHAR" javaType="java.lang.String"/>
+        <result column="organization" property="organization" jdbcType="VARCHAR" javaType="java.lang.String"/>
+        <result column="area" property="area" jdbcType="VARCHAR" javaType="java.lang.String"/>
+        <result column="grade" property="grade" jdbcType="VARCHAR" javaType="java.lang.String"/>
+        <result column="valid_time" property="validTime" jdbcType="DATE" javaType="java.util.Date"/>
+        <result column="name" property="name" jdbcType="VARCHAR" javaType="java.lang.String"/>
+        <result column="create_time" property="createTime" jdbcType="DATE" javaType="java.util.Date"/>
+        <result column="entry_time" property="entryTime" jdbcType="DATE" javaType="java.util.Date"/>
+        <result column="sso" property="sso" jdbcType="VARCHAR" javaType="java.lang.String"/>
+        <result column="mobile" property="mobile" jdbcType="VARCHAR" javaType="java.lang.String"/>
+    </resultMap>
+
+    <resultMap id="BaseResultVo" type="com.ge.po.GeCertifiedUser"> <!-- FIXME 这里重构的时候，要修改这个包 -->
+        <id column="id" property="id" javaType="java.lang.Integer" jdbcType="NUMERIC"/>
+        <result column="head_url" property="headUrl" jdbcType="VARCHAR" javaType="java.lang.String"/>
+        <result column="organization" property="organization" jdbcType="VARCHAR" javaType="java.lang.String"/>
+        <result column="area" property="area" jdbcType="VARCHAR" javaType="java.lang.String"/>
+        <result column="grade" property="grade" jdbcType="VARCHAR" javaType="java.lang.String"/>
+        <result column="valid_time" property="validTime" jdbcType="DATE" javaType="java.util.Date"/>
+        <result column="name" property="name" jdbcType="VARCHAR" javaType="java.lang.String"/>
+        <result column="create_time" property="createTime" jdbcType="DATE" javaType="java.util.Date"/>
+        <result column="entry_time" property="entryTime" jdbcType="DATE" javaType="java.util.Date"/>
+        <result column="sso" property="sso" jdbcType="VARCHAR" javaType="java.lang.String"/>
+        <result column="mobile" property="mobile" jdbcType="VARCHAR" javaType="java.lang.String"/>
+    </resultMap>
+
+    <resultMap id="queryResultVo" type="com.ge.vo.VcategoryUser">
+        <result column="id" property="id" jdbcType="VARCHAR" javaType="java.lang.String"/>
+        <result column="categoryUserName" property="categoryUserName" jdbcType="VARCHAR" javaType="java.lang.String"/>
+        <result column="area" property="area" jdbcType="VARCHAR" javaType="java.lang.String"/>
+        <result column="headUrl" property="headUrl" jdbcType="VARCHAR" javaType="java.lang.String"/>
+        <result column="organiZation" property="organiZation" jdbcType="VARCHAR" javaType="java.lang.String"/>
+        <result column="mobile" property="mobile" jdbcType="VARCHAR" javaType="java.lang.String"/>
+        <result column="productName" property="productName" jdbcType="VARCHAR" javaType="java.lang.String"/>
+        <result column="model" property="model" jdbcType="VARCHAR" javaType="java.lang.String"/>
+        <result column="validTime" property="validTime" jdbcType="DATE" javaType="java.util.Date"/>
+    </resultMap>
+    <!-- 查询数据列Sql不转换成对应的Java命名 -->
+    <sql id="Base_Column_List">
+		head_url,
+		id,
+		organization,
+		area,
+		grade,
+		valid_time,
+		name,
+		create_time,
+		entry_time,
+		sso,
+		mobile
+	</sql>
+
+    <!-- 查询数据列Sql换成对应的Java命名 -->
+    <sql id="Base_Column_List_JavaName">
+		head_url as "headUrl",
+		id as "id",
+		organization as "organization",
+		area as "area",
+		grade as "grade",
+		valid_time as "validTime",
+		name as "name",
+		create_time as "createTime",
+		entry_time as "entryTime",
+		sso as "sso",
+		mobile as "mobile"
+	</sql>
+
+    <!-- 写入操作的SQL -->
+    <sql id="Insert_Base_values">
+		#{headUrl,jdbcType=VARCHAR},
+ 		#{id,jdbcType=NUMERIC},
+ 		#{organization,jdbcType=VARCHAR},
+ 		#{area,jdbcType=VARCHAR},
+ 		#{grade,jdbcType=VARCHAR},
+ 		#{validTime,jdbcType=DATE},
+ 		#{name,jdbcType=VARCHAR},
+ 		#{createTime,jdbcType=DATE},
+ 		#{entryTime,jdbcType=DATE},
+ 		#{sso,jdbcType=VARCHAR},
+ 		#{mobile,jdbcType=VARCHAR}
+ 	</sql>
+
+    <!-- 查询条件的sql -->
+    <sql id="Base_Where_Sql">
+        <where>
+            <if test="headUrl != null and headUrl != ''">
+                and head_url = #{headUrl,jdbcType=VARCHAR}
+            </if>
+            <if test="id != null and id != ''">
+                and id = #{id,jdbcType=NUMERIC}
+            </if>
+            <if test="organization != null and organization != ''">
+                and organization = #{organization,jdbcType=VARCHAR}
+            </if>
+            <if test="area != null and area != ''">
+                and area = #{area,jdbcType=VARCHAR}
+            </if>
+            <if test="grade != null and grade != ''">
+                and grade = #{grade,jdbcType=VARCHAR}
+            </if>
+            <if test="validTime != null and validTime != ''">
+                and valid_time = #{validTime,jdbcType=DATE}
+            </if>
+            <if test="name != null and name != ''">
+                and name = #{name,jdbcType=VARCHAR}
+            </if>
+            <if test="createTime != null and createTime != ''">
+                and create_time = #{createTime,jdbcType=DATE}
+            </if>
+            <if test="entryTime != null and entryTime != ''">
+                and entry_time = #{entryTime,jdbcType=DATE}
+            </if>
+            <if test="sso != null and sso != ''">
+                and sso = #{sso,jdbcType=VARCHAR}
+            </if>
+            <if test="mobile != null and mobile != ''">
+                and mobile = #{mobile,jdbcType=VARCHAR}
+            </if>
+        </where>
+    </sql>
+
+
+    <!-- 条件查询总数据量 -->
+    <select id="queryCount" parameterType="map" resultType="long">
+        select count(1)
+        from ge_certified_user
+        <include refid="Base_Where_Sql"/>
+    </select>
+
+
+    <!-- 单独条件分页查询语句,注意下面语句中的endpoint和startpoint这两个名称不可修改，否则将导致sql错误 -->
+    <select id="queryListPage" parameterType="map" resultMap="BaseResultMap">
+        select * from (
+        select a.*,rownum rn from (
+        select
+        <include refid="Base_Column_List"/>
+        from ge_certified_user
+        <include refid="Base_Where_Sql"/>
+        ) a where rownum &lt;= #{endpoint}
+        ) where rn &gt;= #{startpoint}
+    </select>
+
+    <!-- 单独条件分页查询语句,注意下面语句中的endpoint和startpoint这两个名称不可修改，否则将导致sql错误 -->
+    <select id="queryListPageVo" parameterType="map" resultMap="BaseResultVo">
+        select * from (
+        select a.*,rownum rn from (
+        select
+        <include refid="Base_Column_List"/>
+        from ge_certified_user
+        <include refid="Base_Where_Sql"/>
+        ) a where rownum &lt;= #{endpoint}
+        ) where rn &gt;= #{startpoint}
+    </select>
+
+    <!-- 条件查询 -->
+    <select id="query" parameterType="map" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from ge_certified_user
+        <include refid="Base_Where_Sql"/>
+    </select>
+
+    <!-- 条件查询 -->
+    <select id="queryVo" parameterType="map" resultMap="BaseResultVo">
+        select
+        <include refid="Base_Column_List"/>
+        from ge_certified_user
+        <include refid="Base_Where_Sql"/>
+    </select>
+
+    <!-- 综合条件分页查询语句,注意下面语句中的endpoint和startpoint这两个名称不可修改，否则将导致sql错误 -->
+    <select id="queryPage" parameterType="map" resultMap="BaseResultMap">
+        <choose>
+            <when test="endpoint!=null and endpoint != '' and startpoint != null and startpoint != ''">
+                select * from (
+                select a.*,rownum rn from (
+                select
+                <include refid="Base_Column_List"/>
+                from ge_certified_user
+                <include refid="Base_Where_Sql"/>
+                ) a where rownum &lt;= #{endpoint}
+                ) where rn &gt;= #{startpoint}
+            </when>
+            <otherwise>
+                <!-- 这里的"count"重命名不可修改，否则会出现异常 -->
+                select count(1) "count" from ge_certified_user
+                <include refid="Base_Where_Sql"/>
+            </otherwise>
+        </choose>
+    </select>
+
+    <select id="queryVcategoryUser" parameterType="map" resultMap="queryResultVo">
+        SELECT * FROM (
+        SELECT * FROM V_CATEGORYUSER
+        <where>
+            <if test="searchStr != null">
+                "categoryUserName" like #{searchStr}
+                or "areas" LIKE #{searchStr}
+                or "productName" Like #{searchStr}
+            </if>
+        </where>
+        )
+
+        <where>
+            <if test="areaList != null">
+                and SUBSTR("area",0,INSTR("area",' ')-1) in
+                <foreach item="item" index="index" collection="areaList" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            <if test="modelList != null">
+                and "productName" in
+                <foreach item="item" index="index" open="(" separator="," close=")" collection="modelList">
+                    #{item}
+                </foreach>
+            </if>
+        </where>
+    </select>
+    <select id="quearyArea" parameterType="string"  resultType="string">
+        SELECT  DISTINCT  "area" FROM V_CATEGORYUSER
+        <where>
+            <if test="_parameter != null">
+                "categoryUserName" like #{_parameter}
+                or "areas" LIKE #{_parameter}
+                or "productName" Like #{_parameter}
+            </if>
+        </where>
+    </select>
+    <select id="quearyModel" parameterType="string"  resultType="string">
+        SELECT  DISTINCT  "productName" FROM V_CATEGORYUSER
+        <where>
+            <if test="_parameter != null">
+                "categoryUserName" like #{_parameter}
+                or "areas" LIKE #{_parameter}
+                or "productName" Like #{_parameter}
+            </if>
+        </where>
+    </select>
+    <select id="queryProductById" parameterType="string" resultMap="queryResultVo">
+        select * from V_CATEGORYUSER WHERE
+        "id"= #{id}
+    </select>
+
+
+
+    <insert id="batchInsert" parameterType="java.util.List" useGeneratedKeys="false">
+        INSERT INTO "GE_CERTIFIED_USER" (NAME, GRADE, ORGANIZATION, ENTRY_TIME, AREA, MOBILE,CREATE_TIME)
+        <foreach item="item" index="index" collection="list" separator="union all">
+            (
+            SELECT
+            #{item.name},#{item.grade},#{item.organization},#{item.entryTime},#{item.area},#{item.mobile},#{item.createTime}
+            FROM DUAL
+            )
+        </foreach>
+    </insert>
+</mapper>

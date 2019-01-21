@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ge.dao.GeUserMapper" > <!-- FIXME 这里重构的时候，要修改这个包 -->
+	<resultMap id="BaseResultMap" type="java.util.HashMap">
+		<id column="id" property="id" javaType="java.lang.Integer" jdbcType="NUMERIC" />
+ 		<result column="login_name" property="loginName" jdbcType="VARCHAR" javaType="java.lang.String" />
+ 		<result column="create_time" property="createTime" jdbcType="DATE" javaType="java.util.Date" />
+ 		<result column="role" property="role" jdbcType="NUMERIC" javaType="java.lang.Integer" />
+ 		<result column="password" property="password" jdbcType="VARCHAR" javaType="java.lang.String" />
+ 	</resultMap>
+	
+	<resultMap id="BaseResultVo" type="com.ge.po.GeUser"> <!-- FIXME 这里重构的时候，要修改这个包 -->
+		<id column="id" property="id" javaType="java.lang.Integer" jdbcType="NUMERIC" />
+ 		<result column="login_name" property="loginName" jdbcType="VARCHAR" javaType="java.lang.String" />
+ 		<result column="create_time" property="createTime" jdbcType="DATE" javaType="java.util.Date" />
+ 		<result column="role" property="role" jdbcType="NUMERIC" javaType="java.lang.Integer" />
+ 		<result column="password" property="password" jdbcType="VARCHAR" javaType="java.lang.String" />
+ 	</resultMap>
+
+	<!-- 查询数据列Sql不转换成对应的Java命名 -->
+	<sql id="Base_Column_List" >
+		id,
+		login_name,
+		create_time,
+		role,
+		password
+	</sql>
+	
+	<!-- 查询数据列Sql换成对应的Java命名 -->
+	<sql id="Base_Column_List_JavaName" >
+		id as "id",
+		login_name as "loginName",
+		create_time as "createTime",
+		role as "role",
+		password as "password"
+	</sql>
+	
+	<!-- 写入操作的SQL -->
+	<sql id="Insert_Base_values">
+		#{id,jdbcType=NUMERIC},
+ 		#{loginName,jdbcType=VARCHAR},
+ 		#{createTime,jdbcType=DATE},
+ 		#{role,jdbcType=NUMERIC},
+ 		#{password,jdbcType=VARCHAR}
+ 	</sql>
+	
+	<!-- 查询条件的sql -->
+	<sql id="Base_Where_Sql">
+		<where>
+		<if test="id != null and id != ''">
+			and id = #{id,jdbcType=NUMERIC}
+		</if>
+		<if test="loginName != null and loginName != ''">
+			and login_name = #{loginName,jdbcType=VARCHAR}
+		</if>
+		<if test="createTime != null and createTime != ''">
+			and create_time = #{createTime,jdbcType=DATE}
+		</if>
+		<if test="role != null and role != ''">
+			and role = #{role,jdbcType=NUMERIC}
+		</if>
+		<if test="password != null and password != ''">
+			and password = #{password,jdbcType=VARCHAR}
+		</if>
+		</where>
+	</sql>
+	
+	
+
+	<!-- 条件查询总数据量 -->
+	<select id="queryCount" parameterType="map" resultType="long">
+	select count(1)
+	from ge_user <include refid="Base_Where_Sql" />
+	</select>
+	
+	
+	<!-- 单独条件分页查询语句,注意下面语句中的endpoint和startpoint这两个名称不可修改，否则将导致sql错误 -->
+	<select id="queryListPage" parameterType="map" resultMap="BaseResultMap">
+	select * from (
+		select a.*,rownum rn from (
+		select 
+		<include refid="Base_Column_List"/>
+		from ge_user
+		<include refid="Base_Where_Sql"/>
+		) a where rownum &lt;= #{endpoint}
+	) where rn &gt;= #{startpoint}
+	</select>
+	
+	<!-- 单独条件分页查询语句,注意下面语句中的endpoint和startpoint这两个名称不可修改，否则将导致sql错误 -->
+	<select id="queryListPageVo" parameterType="map" resultMap="BaseResultVo">
+	select * from (
+		select a.*,rownum rn from (
+		select 
+		<include refid="Base_Column_List"/>
+		from ge_user
+		<include refid="Base_Where_Sql"/>
+		) a where rownum &lt;= #{endpoint}
+	) where rn &gt;= #{startpoint}
+	</select>
+	
+	<!-- 条件查询 -->
+	<select id="query" parameterType="map" resultMap="BaseResultMap">
+		select 
+		<include refid="Base_Column_List"/>
+		from ge_user
+		<include refid="Base_Where_Sql"/>
+	</select>
+	
+	<!-- 条件查询 -->
+	<select id="queryVo" parameterType="map" resultMap="BaseResultVo">
+		select 
+		<include refid="Base_Column_List"/>
+		from ge_user
+		<include refid="Base_Where_Sql"/>
+	</select>
+	
+	<!-- 综合条件分页查询语句,注意下面语句中的endpoint和startpoint这两个名称不可修改，否则将导致sql错误 -->
+	<select id="queryPage" parameterType="map" resultMap="BaseResultMap">
+	<choose>
+		<when test="endpoint!=null and endpoint != '' and startpoint != null and startpoint != ''">
+		select * from (
+			select a.*,rownum rn from (
+				select 
+				<include refid="Base_Column_List"/>
+				from ge_user
+				<include refid="Base_Where_Sql"/>
+			) a where rownum &lt;= #{endpoint}
+		) where rn &gt;= #{startpoint}
+		</when>
+		<otherwise>
+		<!-- 这里的"count"重命名不可修改，否则会出现异常 -->
+		select count(1) "count" from ge_user <include refid="Base_Where_Sql" />
+		</otherwise>
+	</choose>
+	</select>
+
+	<select id="checkUsername" parameterType="string"
+			resultType="int"> select count(1) from ge_user where login_name = #{loginName} </select>
+	<select id="selectLogin" parameterType="map" resultMap="BaseResultVo">
+		SELECT
+		<include refid="Base_Column_List_JavaName"/>
+		from ge_user where login_name = #{loginName} and password = #{password}
+	</select>
+</mapper>

@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns="http://www.springframework.org/schema/beans"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/jdbc
+       http://www.springframework.org/schema/jdbc/spring-jdbc.xsd
+       http://www.springframework.org/schema/tx
+       http://www.springframework.org/schema/tx/spring-tx.xsd
+       http://www.springframework.org/schema/aop
+       http://www.springframework.org/schema/aop/spring-aop.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <context:component-scan base-package="com.ge"/>
+
+    <context:property-placeholder location="classpath:oto.properties"/>
+
+    <import resource="classpath:mybatis-servlet.xml" />
+
+    <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
+        <property name="driverClassName">
+            <value>oracle.jdbc.driver.OracleDriver</value>
+        </property>
+        <property name="url">
+            <value>jdbc:oracle:thin:@116.62.160.242:1521:ORCL</value>
+        </property>
+        <property name="username">
+            <value>ROOT</value>
+        </property>
+        <property name="password">
+            <value>root</value>
+        </property>
+        <property name="maxActive">
+            <value>255</value>
+        </property>
+        <property name="maxIdle">
+            <value>2</value>
+        </property>
+        <property name="maxWait">
+            <value>120000</value>
+        </property>
+    </bean>
+
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="dataSource"/>
+        <property name="mapperLocations">
+            <array>
+                <value>classpath:com/ge/*.xml</value>
+            </array>
+        </property>
+        <property name="typeAliasesPackage" value="com.ge.po"/>
+        <property name="plugins">
+            <array>
+                <bean class="com.github.pagehelper.PageInterceptor">
+                    <!-- 这里的几个配置主要演示如何使用，如果不理解，一定要去掉下面的配置 -->
+                    <property name="properties">
+                        <value>
+                            helperDialect=Oracle
+                            reasonable=true
+                            supportMethodsArguments=true
+                            params=count=countSql
+                            autoRuntimeDialect=true
+                        </value>
+                    </property>
+                </bean>
+            </array>
+        </property>
+    </bean>
+
+    <bean class="tk.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="com.ge.dao"/>
+        <!-- 通用Mapper通过属性注入进行配置，默认不配置时会注册Mapper<T>接口
+        <property name="properties">
+            <value>
+                mappers=tk.mybatis.mapper.common.Mapper
+            </value>
+        </property>
+        -->
+    </bean>
+
+    <bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate" scope="prototype">
+        <constructor-arg index="0" ref="sqlSessionFactory"/>
+    </bean>
+    <tx:annotation-driven transaction-manager="transactionManager" />
+    <aop:aspectj-autoproxy proxy-target-class="true"/>
+
+    <!--
+    第一个* 表示任意返回值类型
+    第二个* 表示以任意名字开头的package. 如 com.xx.
+    第三个* 表示以任意名字开头的class的类名 如TestService
+    第四个* 表示 通配 *service下的任意class
+    最后二个.. 表示通配 方法可以有0个或多个参数
+
+    -->
+    <aop:config>
+        <aop:pointcut id="appService" expression="execution(* *..*service.*(..))"/>
+        <aop:advisor advice-ref="txAdvice" pointcut-ref="appService"/>
+    </aop:config>
+
+    <tx:advice id="txAdvice" transaction-manager="transactionManager">
+        <tx:attributes>
+            <tx:method name="select*" read-only="true"/>
+            <tx:method name="find*" read-only="true"/>
+            <tx:method name="get*" read-only="true"/>
+            <tx:method name="*"/>
+        </tx:attributes>
+    </tx:advice>
+
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+</beans>
