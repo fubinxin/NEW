@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">      
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="../css/first.css">
+    <link rel="stylesheet" href="../css/layui.css">
+    <script type="text/javascript" src="../js/layui.js"></script>
+    <title>forth</title>
+</head>
+<body>
+        <br>
+        <!--<p class="page-title">第四步 系统排所有信号</p>-->
+        <div class="first">
+            <div class="both"></div>
+            <article class="article">
+                <div class="flex">
+                    <div>选择控制器 :</div>
+                    <input class="contrl" type="text"id="controller">
+                </div>
+                <div class="flex">
+                    <div>SIG Type :</div>
+                    <select class="select typeOne"id="SIG_Type"></select>
+                </div>
+                <div class="flex">
+                    <div> Sensor Type :</div>
+                    <select class="select typeTwo" id="Sensor_Type"> </select>
+                </div>
+                <div class="flex">
+                    <div> Module : </div>
+                    <select class="select Module"> </select>
+                </div>
+                <div id="btn_search"><img src="images/img/search.png" alt=""></div>
+            </article>
+            <div class="both"></div>
+           <div class="layui-form">
+                <table class="layui-table" id="checkTable" lay-filter="user"></table> 
+           </div>
+           
+          
+            <ul class="ul ">
+
+                <li><button class="layui-btn layui-btn-warm mr20" id="Step1">步骤4</button></li>
+                <li><button class="layui-btn" id="output">所有记录导出至Excel</button></li>
+    
+    
+    
+            </ul>
+        </div>
+</body>
+<script type="text/javascript" src="../js/cook3.js"></script>
+<script type="text/javascript" src="../js/jquery-1.9.1.min.js"></script>
+<script type="text/javascript" src="../js/WapRoot.js"></script>
+<script type="text/javascript" src="../js/layui/layui.js" charset="utf-8"></script>
+<script type="text/javascript" src="../js/table.js"></script>
+<script type="text/javascript" src="../js/common.js"></script>
+<script>
+    $("#btn_select>select").change(function () {
+        let text=$("#btn_select>select option:selected").text();
+        $("#btn_select>span").text(text);
+    });
+    $("#btn_Sensor>select").change(function () {
+        let sel=$("#btn_Sensor>select option:selected").text();
+        $("#btn_Sensor>span").text(sel);
+    });
+    $("#btn_Module>select").change(function () {
+        let s=$("#btn_Module>select option:selected").text();
+        $("#btn_Module>span").text(s);
+    });
+//    var output = document.getElementById("output");
+//        output.onclick = function(){
+//            //alert(99);
+//            location.href = "http://47.98.156.138:8080/loop/download?stepNumber=4"
+//        }
+</script>
+</html>

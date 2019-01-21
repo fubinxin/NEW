@@ -1,0 +1,1 @@
+--insert into loopnamecard(cardNo) values(1)

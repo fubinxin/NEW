@@ -1,0 +1,26 @@
+server:
+  port: 8080
+
+### Database for MySQL ###
+spring:
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/bhge?useUnicode=true&characterEncoding=utf-8&useSSL=true&&allowMultiQueries=true
+    username: root
+    password: root
+  http:
+    multipart:
+      max-file-size: 2MB
+      max-request-size: 10MB
+
+
+
+mybatis:
+  typeAliasesPackage: org.canx.model
+  mapperLocations: classpath:mapper/*.xml
+
+
+# LOGGING
+logging:
+  level:
+    com.mahindra: debug

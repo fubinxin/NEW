@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta  http-equiv="X-UA-Compatible" content="chrome=1;IE=10"/>
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="../css/first.css">
+    <link rel="stylesheet" href="../js/layui/css/modules/layer/default/layui.css">
+
+    <title>first</title>
+</head>
+<body>
+    <br>
+    <!--<p class="page-title">第一步 标识冗余信号及相关信号</p>-->
+    <div class="first" id="1">
+        <div class="both"></div>
+        <article class="article">
+            <div class="flex">
+                <div>Controller :</div>
+                <input class="contrl" type="text"id="controller">
+            </div>
+            <div class="flex">
+                <div>SIG Type :</div>
+                <select class="select typeOne"id="SIG_Type"></select>
+            </div>
+            <div class="flex">
+                <div> Sensor Type :</div>
+				<select class="select typeTwo" id="Sensor_Type"> </select>
+            </div>
+            <div id="btn_search"><img src="images/img/search.png" alt=""></div>
+        </article>
+        <div class="both"></div>
+       <div class="layui-form">
+
+			<table class="layui-table" id="checkTable" lay-filter="user"></table>
+       </div>
+
+       <!--<div class="layui-form-item">-->
+            <!--<div class="layui-input-block">-->
+              <!--<input class="radio" type="radio" name="info" value="将上面选择标记为一组冗余信号" title="" checked="">将上面选择标记为一组冗余信号-->
+              <!--<br>-->
+              <!--<input  class="radio" type="radio" name="info" value="将上面选择标记为一组相关信号" title="">将上面选择标记为一组相关信号-->
+            <!--</div>-->
+          <!--</div>-->
+        <ul class="ul ">
+            <li><button class="layui-btn layui-btn-warm mr20" id="Step1">Step 1</button></li>
+            <li><button class="layui-btn layui-bg-red mr20" id="rongyu">Label redundant signals</button></li>
+            <li><button class="layui-btn layui-bg-blue mr20">Mark as a correlation signal</button></li>
+            <li><button class="layui-btn layui-bg-black mr20">Mark as an uncorrelated signal</button></li>
+
+            <li><button class="layui-btn" id="output">Export all records to Excel</button></li>
+
+
+
+        </ul>
+    </div>
+
+</body>
+    <script type="text/javascript" src="../js/cook.js"></script>
+ 	<script type="text/javascript" src="../js/jquery-1.9.1.min.js"></script>
+	<script type="text/javascript" src="../js/WapRoot.js"></script>
+	<script type="text/javascript" src="../js/layui/layui.js" charset="utf-8"></script>
+	<script type="text/javascript" src="../js/table.js">	</script>
+    <script type="text/javascript" src="../js/common.js">	</script>
+<script type="text/javascript">
+        window.onload = function(){
+//            $.ajax({
+//                url:http+"/loop/step?stepNumber=1",
+//                type: "post",
+//                async: false,
+//                crossDomain: true,
+//                contentType: "application/json; charset=utf-8",
+//                dataType: "json",
+//                success: function (data) {
+//                    console.log(data);
+//                    if (data.status == 201) {
+//                        layer.msg("post成功！");
+//                            //console.log(data);
+//                            }else{
+//                                layer.msg(data.msg);
+//                            }
+//
+//            }
+//            })
+            loadIng();
+        }
+//        var http = "http://47.98.156.138:8080";
+        var idname;
+
+        //download
+//        var output = document.getElementById("output");
+//        output.onclick = function(){
+//            //alert(99);
+//            location.href = "http://47.98.156.138:8080/loop/download?stepNumber=1"
+//        }
+
+        //marks
+        layui.use('table', function(){
+                var table = layui.table;
+                var chooseId = "" ;
+                var $ = layui.$, active = {
+                getCheckData: function(){ //获取选中数据
+
+                    $("input:checkbox[name='layTableCheckbox']:checked").each(function(){
+                        var mm = $(this).parent().parent().parent().attr("data-index");
+                        chooseId += table.cache.testReload[mm].orgNo+",";
+                    })
+                }
+
+            };
+            var li = $(".ul").find("li button");
+            li.on("click", function () {
+                if( $(this).text() === "Labeled redundant signals"){
+                    active.getCheckData();
+                    console.log("Labeled redundant signals========="+chooseId);
+                    askAjax(1,chooseId);
+                    chooseId = "";
+                }else  if( $(this).text() === "Mark it as a correlation signal"){
+                    active.getCheckData();
+                    console.log("Mark it as a correlation signal========="+chooseId);
+                    window.askAjax(2,chooseId);
+                    chooseId = "";
+                }else  if( $(this).text() === "Marked as an uncorrelated signal"){
+                    active.getCheckData();
+                    console.log("Marked as an uncorrelated signal========="+chooseId);
+                    window.askAjax(3,chooseId);
+                    chooseId = "";
+                }
+            })
+})
+
+//function askAjax(type,org){
+//    $.ajax({
+//        url:http+"/loop/chooseMark?type="+type+"&orgNos="+org,
+//        type: "post",
+//        async: false,
+//        crossDomain: true,
+//        contentType: "application/json; charset=utf-8",
+//        dataType: "json",
+//        success: function (data) {
+//            //console.log(data);
+//            if (data.status == 200) {
+//                layer.msg("标记成功！");
+//                       console.log(data);
+//                    }else{
+//                        layer.msg(data.msg);
+//                    }
+//
+//            }
+//    });
+//
+//
+//}
+    </script>
+</html>

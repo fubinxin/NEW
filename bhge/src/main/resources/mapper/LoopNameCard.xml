@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mahindra.mapper.LoopNameCardMapper">
+    <!-- 自定义返回结果集 -->
+    <resultMap id="cardMap" type="com.mahindra.po.ArrayLoopNameCardPo">
+        <id property="cardNo" column="cardNo" javaType="java.lang.Integer"></id>
+        <result property="cardSigType" column="sigType" javaType="java.lang.String"></result>
+        <result property="cardSensorType" column="sensorType" javaType="java.lang.String"></result>
+        <result property="isRedundancy" column="isRedundancy" javaType="java.lang.Integer"></result>
+        <result property="maxSigNum" column="maxSigNum" javaType="java.lang.Integer"></result>
+
+
+    </resultMap>
+    <!-- insert -->
+    <insert id="saveCard" parameterType="com.mahindra.po.ArrayLoopNameCardPo">
+        INSERT INTO  loopNameCard (cardNo, sigType ,
+        sensorType,      isRedundancy,maxSigNum
+        )
+        VALUES   (#{cardNo}, #{cardSigType} ,
+        #{cardSensorType},#{isRedundancy},#{maxSigNum}
+        )
+    </insert>
+
+    <delete id="clearCard">
+        delete from loopNameCard
+    </delete>
+
+    <select id="selectAllCard" resultMap="cardMap">
+        select * from loopNameCard
+    </select>
+
+    <select id="getCardCount" resultType="int">
+        select count(cardNo) from loopNameCard
+    </select>
+    <!--getMaxCardNum -->
+    <select id="getMaxCardNum" resultType="int">
+        select max(cardNo) from loopNameCard
+    </select>
+
+    <select id="getCardByTypeNoLeft"  parameterType="map" resultMap="cardMap">
+
+        select t1.* from loopNameCard t1
+        where  t1.sigType = #{sigType}
+        and
+        ( t1.cardNo   in
+        (select t2.cardNo  from  bhge_goods t2
+        group by  t2.cardNo
+        HAVING count(t2.cardNo) &lt;   #{needNum} )
+        )
+
+    </select>
+    <select id="getCardByType"  parameterType="map" resultMap="cardMap">
+
+        select t1.* from loopNameCard t1
+        where  t1.sigType = #{sigType}
+        and
+        (t1.cardNo in
+        (select t2.cardNo from  bhge_goods t2 where t2.isLeft = #{isLeft}
+        group by  t2.cardNo, t2.isLeft
+        HAVING count(t2.cardNo) &lt; #{needNum} )
+        OR t1.cardNo IN
+        (t1.cardNo IN
+        (select t3.cardNo from  bhge_goods t3
+        WHERE t3.ISLeft != #{isLeft}
+        group by  t3.cardNo, t3.isLeft)
+        AND t1.cardNo NOT IN
+        (select t2.cardNo from  bhge_goods t2 where t2.isLeft != #{isLeft}
+        group by  t2.cardNo, t2.isLeft)
+        )
+        )
+
+    </select>
+
+    <select id="getCardByTypeNewRight"  parameterType="map" resultMap="cardMap">
+
+        select t1.* from loopNameCard t1
+        where  t1.sigType = #{sigType}
+        and
+         t1.cardNo not  in
+        (select t2.cardNo  from  bhge_goods t2 WHERE t2.isLeft = #{isLeft}
+         )
+
+    </select>
+
+
+
+</mapper>

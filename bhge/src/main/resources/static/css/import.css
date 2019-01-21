@@ -1,0 +1,46 @@
+
+.import{
+	display: inline-flex;
+}
+.mar,.controller{
+    display: inline-block;
+    width: 250px;
+    height: 220px;
+    background: white;
+    cursor: pointer;
+    margin: 30px 50px;
+    padding: 30px 10px;
+    text-align: center;
+    color: #000;
+    box-shadow: 3px 3px 14px rgba(0,0,0,0.14);
+}
+.mar input{
+	height: 180px;
+    width: 200px;
+
+    padding-top: 140px;
+    margin-top: -90px;
+    margin-left: -30px;
+}
+.mar img ,.controller img{
+	margin-top: 40px;
+}
+.cover{
+display: inline-block;
+    height: 30px;
+    width: 35%;
+    background: #ffffff;
+    position: absolute;
+    margin-top: 45px;
+    margin-left: -203px;
+}
+.controller #choose_contrl{
+	height: 38px;
+	width: 100px;
+    margin-top: 50px;
+    padding: 0 10px;
+}
+.mar{
+	position: relative;
+
+}

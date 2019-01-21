@@ -1,0 +1,92 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">      
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="../css/first.css">
+    <link rel="stylesheet" href="../js/layui/css/modules/layer/default/layui.css">
+    <title>first</title>
+</head>
+<body>
+    <br>
+    <p class="page-title">查询已导入的信号</p>
+    <div class="first">
+        <div class="both"></div>
+        <!--<article class="article">-->
+            <!--<div class="flex">-->
+                <!--<div>选择控制器:</div>-->
+                <!--<input class="contrl" type="text" id="controller">-->
+            <!--</div>-->
+            <!--<div class="flex">-->
+                <!--<div>SIG Type :</div>-->
+                <!--<select class="select typeOne"> </select>-->
+            <!--</div>-->
+            <!--<div class="flex">-->
+                <!--<div> Sensor Type :</div>-->
+                 <!--<select class="select typeTwo"> </select>-->
+            <!--</div>-->
+            <!--<div id="btn_search"><img src="images/img/search.png" alt=""></div>-->
+        <!--</article>-->
+        <article class="article">
+            <div class="flex">
+                <div>controller :</div>
+                <input class="contrl" type="text"id="controller">
+            </div>
+            <div class="flex">
+                <div>SIG Type :</div>
+                <select class="select typeOne"id="SIG_Type"></select>
+            </div>
+            <div class="flex">
+                <div> Sensor Type :</div>
+                <select class="select typeTwo" id="Sensor_Type"> </select>
+            </div>
+            <div id="btn_search"><img src="images/img/search.png" alt=""></div>
+        </article>
+        <div class="both"></div>
+       <div class="layui-form">
+
+          <!--<table class="layui-table">-->
+                    <!--<colgroup>-->
+                      <!--<col width="150">-->
+                      <!--<col width="150">-->
+                      <!--<col width="200">-->
+                      <!--<col>-->
+                    <!--</colgroup>-->
+                    <!--<thead>-->
+                      <!--<tr>-->
+                        <!--<th>item</th>-->
+                        <!--<th>item</th>-->
+                        <!--<th>item</th>-->
+                        <!--<th>item</th>-->
+                      <!--</tr> -->
+                    <!--</thead>-->
+                    <!--<tbody>-->
+                      <!--<tr>-->
+                        <!--<td> </td>-->
+                        <!--<td>a</td>-->
+                        <!--<td></td>-->
+                        <!--<td></td>-->
+                      <!--</tr>-->
+                      <!--<tr>-->
+                         <!--<td></td>-->
+                         <!--<td>b</td>-->
+                         <!--<td></td>-->
+                         <!--<td></td>-->
+                       <!--</tr>-->
+               <!--</tbody>-->
+       <!--</table>-->
+           <table class="layui-table" id="checkTable" lay-filter="user"></table>
+       </div>
+       
+        
+    </div>
+    <script type="text/javascript" src="../js/cook.js"></script>
+    <script type="text/javascript" src="../js/jquery-1.9.1.min.js"></script>
+    <script type="text/javascript" src="../js/WapRoot.js"></script>
+    <script type="text/javascript" src="../js/layui/layui.js" charset="utf-8"></script>
+    <script type="text/javascript" src="../js/table.js"></script>
+    <script type="text/javascript" src="../js/common.js"></script>
+
+</body>
+</html>

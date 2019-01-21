@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mahindra.mapper.OrarialLoopNameMapper">
+    <!-- 自定义返回结果集 -->
+    <resultMap id="loopNameMap" type="com.mahindra.po.OriginalLoopNamePo">
+        <id property="orgNo" column="orgNo" javaType="java.lang.String" jdbcType="VARCHAR"></id>
+        <result property="discern_order" column="discern_order" javaType="java.lang.Integer" jdbcType="INTEGER"></result>
+
+        <result property="rep_tag" column="rep_tag" javaType="java.lang.String" jdbcType="INTEGER"></result>
+        <result property="reg_No" column="reg_No" javaType="java.lang.Integer" jdbcType="INTEGER"></result>
+        <result property="ralate_tag" column="ralate_tag" javaType="java.lang.String" jdbcType="VARCHAR"></result>
+        <result property="ralate_No" column="ralate_No" javaType="java.lang.Integer" jdbcType="INTEGER"></result>
+        <result property="repBlock" column="repBlock" javaType="java.lang.Boolean" jdbcType="BOOLEAN"></result>
+
+        <result property="controllId" column="controll_id" javaType="java.lang.String" jdbcType="VARCHAR"></result>
+        <result property="loop_name" column="loop_name" javaType="java.lang.String" jdbcType="VARCHAR"></result>
+        <result property="pid_tag" column="pid_tag" javaType="java.lang.String" jdbcType="VARCHAR"></result>
+        <result property="sig_type" column="sig_type" javaType="java.lang.String" jdbcType="VARCHAR"></result>
+        <result property="sensor_type" column="sensor_type" javaType="java.lang.String" jdbcType="VARCHAR"></result>
+        <result property="desc_info" column="desc_info" javaType="java.lang.String" jdbcType="VARCHAR"></result>
+
+        <result property="cardNo" column="cardNo" javaType="java.lang.Integer" jdbcType="INTEGER"></result>
+        <result property="isLeft" column="isLeft" javaType="java.lang.Integer" jdbcType="INTEGER"></result>
+        <result property="chNumber" column="chNumber" javaType="java.lang.Integer" jdbcType="INTEGER"></result>
+
+    </resultMap>
+    <!-- insert -->
+    <insert id="insertGood" parameterType="com.mahindra.po.OriginalLoopNamePo">
+        INSERT INTO  bhge_goods (orgNo, discern_order ,
+        rep_tag,      reg_No,ralate_tag , ralate_No ,repBlock   ,
+        loop_name,pid_tag,sig_type, sensor_type , desc_info,
+        cardNo , isLeft, chNumber, controll_id
+        )
+        VALUES   (#{orgNo}, #{discern_order} ,
+        #{rep_tag},#{reg_No},#{ralate_tag},#{ralate_No},#{repBlock},
+        #{loop_name}, #{pid_tag}, #{sig_type}, #{sensor_type},#{desc_info},
+        #{cardNo},   #{isLeft},   #{chNumber}, #{controllId}
+        )
+    </insert>
+    <!-- batch insert -->
+    <insert id="batchInsertGood" parameterType="java.util.List">
+        INSERT INTO  bhge_goods (orgNo, discern_order ,
+        rep_tag,      reg_No,ralate_tag , ralate_No ,repBlock   ,
+        loop_name,pid_tag,sig_type, sensor_type , desc_info,
+        cardNo , isLeft, chNumber, controll_id
+        )
+        VALUES
+        <foreach collection ="list" item="item" index= "index" separator =",">
+            (#{item.orgNo}, #{item.discern_order} ,
+            #{item.rep_tag},#{item.reg_No},#{item.ralate_tag},#{item.ralate_No},#{item.repBlock},
+            #{item.loop_name}, #{item.pid_tag}, #{item.sig_type}, #{item.sensor_type},#{item.desc_info},
+            #{item.cardNo},   #{item.isLeft},   #{item.chNumber}, #{item.controllId}
+            )
+        </foreach>
+    </insert>
+    <!-- delete table data -->
+    <delete id="delAllGoods">
+        delete from bhge_goods
+    </delete>
+
+    <delete id="delGoodsByOrgNoAndControllerId" parameterType="java.util.Map">
+        delete from bhge_goods
+        WHERE orgNo IN (#{orgNos}) and controll_id = #{controllerId}
+    </delete>
+
+    <!-- 更新 updateGood 更新 步骤修改的字段，原始字段不动。 -->
+    <update id="updateGood"  parameterType="com.mahindra.po.OriginalLoopNamePo">
+        UPDATE  bhge_goods t
+        <set>
+            <if test="discern_order != null">
+                t.discern_order = #{discern_order ,jdbcType=INTEGER},
+            </if>
+            <if test="controllId != null">
+                t.controll_id = #{controllId ,jdbcType=VARCHAR},
+            </if>
+            <if test="rep_tag != null">
+                t.rep_tag = #{rep_tag ,jdbcType=INTEGER},
+            </if>
+            <if test="reg_No != null">
+                t.reg_No = #{reg_No ,jdbcType=INTEGER},
+            </if>
+            <if test="ralate_tag != null">
+                t.ralate_tag = #{ralate_tag ,jdbcType=VARCHAR},
+            </if>
+            <if test="ralate_No != null">
+                t.ralate_No = #{ralate_No ,jdbcType=INTEGER},
+            </if>
+            <if test="repBlock != null">
+                t.repBlock = #{repBlock ,jdbcType=BOOLEAN},
+            </if>
+            <if test="cardNo != null">
+                t.cardNo = #{cardNo ,jdbcType=INTEGER},
+            </if>
+            <if test="isLeft != null">
+                t.isLeft = #{isLeft ,jdbcType=INTEGER},
+            </if>
+            <if test="chNumber != null">
+                t.chNumber = #{chNumber ,jdbcType=INTEGER}
+            </if>
+        </set>
+        <where>
+            <if test="orgNo != null">
+                t.orgNo = #{orgNo ,jdbcType=VARCHAR}
+            </if>
+        </where>
+    </update>
+
+    <update id="batchUpdateGood"  parameterType="java.util.List">
+        <foreach collection ="list" item="item" separator =";">
+            UPDATE  bhge_goods t
+            <set>
+                <if test="item.discern_order != null">
+                    t.discern_order = #{item.discern_order ,jdbcType=NUMERIC},
+                </if>
+                <if test="item.controllId != null">
+                    t.controll_id = #{item.controllId ,jdbcType=VARCHAR},
+                </if>
+                <if test="item.rep_tag != null">
+                    t.rep_tag = #{item.rep_tag ,jdbcType=NUMERIC},
+                </if>
+                <if test="item.reg_No != null">
+                    t.reg_No = #{item.reg_No ,jdbcType=NUMERIC},
+                </if>
+                <if test="item.ralate_tag != null">
+                    t.ralate_tag = #{item.ralate_tag ,jdbcType=VARCHAR},
+                </if>
+                <if test="item.ralate_No != null">
+                    t.ralate_No = #{item.ralate_No ,jdbcType=NUMERIC},
+                </if>
+                <if test="item.repBlock != null">
+                    t.repBlock = #{item.repBlock ,jdbcType=BOOLEAN},
+                </if>
+                <if test="item.cardNo != null">
+                    t.cardNo = #{item.cardNo ,jdbcType=NUMERIC},
+                </if>
+                <if test="item.isLeft != null">
+                    t.isLeft = #{item.isLeft ,jdbcType=NUMERIC},
+                </if>
+                <if test="item.chNumber != null">
+                    t.chNumber = #{item.chNumber ,jdbcType=NUMERIC}
+                </if>
+            </set>
+            <where>
+                <if test="item.orgNo != null">
+                    t.orgNo = #{item.orgNo ,jdbcType=VARCHAR}
+                </if>
+            </where>
+        </foreach>
+    </update>
+
+
+    <update id="batchUpdateGoodNotRelateForH2"  parameterType="com.mahindra.po.OriginalLoopNamePo">
+            UPDATE  bhge_goods t set
+            t.rep_tag = #{rep_tag},
+            t.reg_No = #{reg_No},
+            t.ralate_tag = #{ralate_tag},
+            t.ralate_No = #{ralate_No}
+            where t.orgNo = #{orgNo}
+    </update>
+
+    <update id="batchUpdateGoodNotRelate"  parameterType="java.util.List">
+        <foreach collection ="list" item="item" separator =";">
+            UPDATE  bhge_goods t set
+                    t.rep_tag = #{item.rep_tag},
+                    t.reg_No = #{item.reg_No},
+                    t.ralate_tag = #{item.ralate_tag},
+                    t.ralate_No = #{item.ralate_No}
+            <where>
+                <if test="item.orgNo != null">
+                    t.orgNo = #{item.orgNo}
+                </if>
+            </where>
+        </foreach>
+    </update>
+
+    <select id="selectAllGoods" resultMap="loopNameMap">
+        select * from bhge_goods order by discern_order-0
+    </select>
+    <select id="selectREGoods" resultMap="loopNameMap">
+         select * from bhge_goods t where t.repBlock = 1 order by t.sig_type, t.sensor_type , t.discern_order
+    </select>
+    <!-- selectReLatedGoods-->
+    <select id="selectReLatedGoods" resultMap="loopNameMap">
+        select * from bhge_goods t where t.repBlock != 1 and
+        t.rep_tag != ''
+        and  t.rep_tag is not null order by discern_order
+    </select>
+
+    <!--selectGoods others -->
+    <select id="selectOtherGoodsByDiscernOrder" resultMap="loopNameMap">
+        select * from bhge_goods t where
+        t.rep_tag = ''
+        or t.rep_tag is  null order by discern_order
+    </select>
+
+
+    <!--selectGoodsListByReOrder-->
+    <select id="selectGoodsListByReOrder" resultMap="loopNameMap">
+        select * from bhge_goods t  order by t.sig_type, t.sensor_type ,
+          t.reg_No ,t.ralate_No,  discern_order
+    </select>
+
+    <select id="selectRecommendGoods" resultMap="loopNameMap">
+        select * from bhge_goods limit 0,4
+    </select>
+
+    <select id="getSigTypeByControll" resultType="java.lang.String" parameterType="java.lang.String">
+        select sig_type from bhge_goods
+        <where>
+            <if test="_parameter != null">
+                controll_id = #{_parameter}
+            </if>
+        </where>
+        group by sig_type
+    </select>
+
+    <select id="getSensorTypeByControll" resultType="java.lang.String" parameterType="java.util.Map">
+        select sensor_type from bhge_goods
+        <where>
+            <if test="controllId != null">
+                controll_id = #{controllId}
+            </if>
+            <if test="sig_type != null and sig_type != ''">
+                and sig_type = #{sig_type}
+            </if>
+        </where>
+        group by sensor_type
+    </select>
+    <select id="getGoodsListByDiscernOrder" resultMap="loopNameMap" parameterType="com.mahindra.po.OriginalLoopNamePo">
+        select * from bhge_goods
+        <where>
+            <if test="controllId != null">
+                controll_id = #{controllId}
+            </if>
+            <if test="sig_type != null and sig_type != ''">
+                and sig_type = #{sig_type}
+            </if>
+            <if test="sensor_type != null and sensor_type != ''">
+                and sensor_type = #{sensor_type}
+            </if>
+            <if test="cardNo != null">
+                and cardNo = #{cardNo}
+            </if>
+        </where>
+        order by discern_order
+    </select>
+
+    <select id="getGoodsListByCard" parameterType="java.lang.Integer" resultMap="loopNameMap">
+        select * from bhge_goods where cardNo = #{cardNo}
+    </select>
+
+    <select id="getGoodsByOrgNos" resultMap="loopNameMap" parameterType="java.util.ArrayList">
+      select * from bhge_goods
+      where orgNo in
+      <foreach collection="array" item="orgNo" open="(" separator="," close=")">
+          #{orgNo}
+      </foreach>
+    </select>
+</mapper>
